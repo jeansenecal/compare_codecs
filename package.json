@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/jeansenecal/compare_codecs/issues"
   },
-  "homepage": "https://github.com/jeansenecal/compare_codecs#readme"
+  "homepage": "https://github.com/jeansenecal/compare_codecs#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
 }
