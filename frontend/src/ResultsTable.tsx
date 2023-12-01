@@ -1,5 +1,8 @@
+interface ShowUsers {
+  showUsers?: boolean;
+}
 
-export default function ResultsTable() {
+export default function ResultsTable ( { showUsers }:ShowUsers) {
   return (
     <div className="overflow-x-auto">
   <table className="table table-zebra">
@@ -7,9 +10,10 @@ export default function ResultsTable() {
     <thead>
       <tr>
         <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
+        {showUsers &&<th>Name</th>}
+        <th>Codecs</th>
+        <th>Hardware</th>
+        <th>Results</th>
       </tr>
     </thead>
     <tbody>

@@ -2,15 +2,15 @@ import './index.css';
 import Navigation from './Navigation';
 import ResultsTable from './ResultsTable';
 
-function MyResults() {
+function GlobalResults() {
   return (
     <div>
       <Navigation />
       <section className='mx-40 my-10'>
-        <ResultsTable showUsers={false} />
+        <ResultsTable showUsers={true}/>
       </section>
     </div>
   );
 }
 
-export default MyResults;
+export default GlobalResults;
