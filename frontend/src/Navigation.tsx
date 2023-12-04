@@ -1,8 +1,6 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import MyResults from "./MyResults";
+import { Link } from "react-router-dom";
 export default function Navigation() {
   return (
-    <Router>
       <div className="navbar bg-secondary">
         <div className="navbar-start">
           <div className="dropdown">
@@ -27,29 +25,27 @@ export default function Navigation() {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-              <Routes>
-                <Route path="/my-resultss" element={<MyResults/>} />
-              </Routes> 
+                <Link to="/my-results">My Results</Link>
               </li>
               <li>
-                <a>Global Results</a>
+                <Link to="/global-results">Global Results</Link>
               </li>
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">Compare Codecs</a>
+          <Link className="btn btn-ghost normal-case text-xl" to="/">Compare Codecs</Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a>My Results</a>
+              <Link to="/my-results">My Results</Link>
             </li>
             <li>
-              <a>Global Results</a>
+              <Link to="/global-results">Global Results</Link>
             </li>
           </ul>
         </div>
         <div className="navbar-end">
-          <a className="btn">Login</a>
+          <Link className="btn" to="/login">Login</Link>
 
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -62,18 +58,11 @@ export default function Navigation() {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
                 <a>Logout</a>
               </li>
             </ul>
           </div>
         </div>
       </div>
-    </Router>
   );
 }
