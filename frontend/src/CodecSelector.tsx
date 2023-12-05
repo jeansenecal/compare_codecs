@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CodecSelector() {
     return ( 
         <div className="flex flex-row flex-wrap justify-center mt-20">
@@ -12,5 +14,6 @@ export default function CodecSelector() {
                 <option>Greedo</option>
             </select>
             <button className="btn btn-accent ml-10">Compare!</button>
+            <Link to="/abx">Test</Link>
         </div>
     )}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
@@ -22,7 +23,7 @@ export default function Login() {
             </div>
             <div className="form-control mt-6 gap-6">
               <button type="submit" className="btn btn-primary">Login</button>
-              <a className="btn btn-secondary" href="/signup">Create Account</a>
+              <Link to="/signup" className="btn btn-secondary">Create Account</Link>
             </div>
           </form>
         </div>
