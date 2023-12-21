@@ -2,8 +2,8 @@
 export default function SetupSelector() {
     return ( 
         <div className="flex flex-row flex-wrap justify-center ml-20 mt-20 mr -20">
-            <select className="mx-5 select select-bordered w-full max-w-xs">
-                <option disabled selected>Which setup are you using?</option>
+            <select defaultValue={""} className="mx-5 select select-bordered w-full max-w-xs">
+                <option disabled value="">Which setup are you using?</option>
                 <option>Han Solo</option>
                 <option>Greedo</option>
             </select>
