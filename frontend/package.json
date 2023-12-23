@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@types/howler": "^2.2.11",
     "daisyui": "^3.8.1"
   }
 }
