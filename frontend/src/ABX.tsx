@@ -10,7 +10,7 @@ export default function ABX (){
     const [isButtonASelected, setisButtonASelected] = useState(false);
     const [isButtonBSelected, setisButtonBSelected] = useState(false);
     const [playerCurrentlyPlaying, setPlayerCurrentlyPlaying] = useState("");
-    console.log(playerCurrentlyPlaying)
+
     const toggleButtons = (event: React.MouseEvent<HTMLButtonElement>, button: string) => {
         if (button === buttonA) {
             setisButtonASelected(!isButtonASelected);
