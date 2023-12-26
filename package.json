@@ -2,8 +2,11 @@
   "name": "compare_codecs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
+    "build": "cd backend && npx tsc",
+    "start": "cd backend && node dist/server.js",
+    "dev": "cd backend && nodemon --exec npx ts-node server.ts",
     "install-server": "cd backend && npm install",
     "start-server": "cd backend && node server.ts",
     "install-frontend": "cd frontend && npm install",
