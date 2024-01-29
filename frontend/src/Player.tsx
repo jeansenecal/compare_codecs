@@ -11,6 +11,17 @@ interface PlayerProps {
 
 export default function Player({ songUrl, name, colour, checked, setPlayerCurrentlyPlaying }: PlayerProps) {
 
+  //TODO
+  //set preload to true
+  //Use the attribute sprite to set when you want the start playing so you don't have to create different files for the same song
+  /*new Howl({
+    sprite: {
+      key1: [offset, duration, (loop)]
+    },
+  });*/
+  //Or use the .seek()?
+
+
   //Every time the component is rendered a new Howl instance is created. I need to use useRef to keep the instance referenced.
   const soundRef: React.MutableRefObject<Howl> = useRef(new Howl({
     src: [songUrl],

@@ -68,6 +68,9 @@ export default function ABX (){
                     </button>
                 </h1>
             </div>
+            <div className="flex flex-col items-center">
+            <button className="btn my-3 btn-error">End Test</button>
+            </div>
             
         </div>
     )

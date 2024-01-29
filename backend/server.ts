@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
-import MongoStrore from "connect-mongo";
+import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import connectDB from "./config/database";
 import mainRoutes from "./routes/main";
@@ -13,7 +13,7 @@ import mainRoutes from "./routes/main";
 dotenv.config({ path: "./config/.env" });
 
 //passport config
-//require("./config/passport")(passport);
+require("./config/passport")(passport);
 
 app.use(cors());
 
@@ -26,6 +26,25 @@ app.use(express.static("public"));
 //Body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Setup Sessions - stored in MongoDB
+app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({ client: mongoose.connection.getClient() }),
+      cookie: {
+        sameSite: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: parseInt(process.env.SESS_LIFETIME!)
+      }
+    })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
