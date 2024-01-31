@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 import passport from "passport";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import flash from "connect-flash";
 import connectDB from "./config/database";
 import mainRoutes from "./routes/main";
 
@@ -44,7 +43,7 @@ app.use(
 
 // Passport middleware
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);

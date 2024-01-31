@@ -1,8 +1,6 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import mongoose from "mongoose";
-import { Document } from "mongoose";
-import { Request } from "express";
-import User, { IUser, UserDocument } from "../models/User";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import User, { UserDocument } from "../models/User";
 
 module.exports = async function (passport: any) {
   passport.use(
@@ -35,6 +33,32 @@ module.exports = async function (passport: any) {
         }
           
     })
+  ),
+  
+  passport.use(
+    'jwt',
+    new JwtStrategy({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('JWT'),
+      secretOrKey: process.env.JWT_SECRET!
+    }, (jwt_payload, done) => {
+      try {
+        User.findOne({
+          where: {
+            id: jwt_payload.id,
+          },
+        }).then(user => {
+          if (user) {
+            console.log('user found in db in passport');
+            done(null, user);
+          } else {
+            console.log('user not found in db');
+            done(null, false);
+          }
+        });
+      } catch (err) {
+        done(err);
+      }
+    }),
   );
 
   passport.serializeUser((user: UserDocument, done: any) => {

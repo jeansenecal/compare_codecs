@@ -3,7 +3,7 @@ import validator from "validator";
 import User, { UserDocument } from "../models/User";
 import { Request, Response } from "express";
 import { IVerifyOptions } from "passport-local";
-
+import jwt from 'jsonwebtoken';
 
 export const postSignup = async (req: Request, res: Response) => {
     if(req !== null && req.body !== null && req.body.email !== null && req.body.password !== null && req.body.confirmPassword !== null){
@@ -62,8 +62,15 @@ export const postLogin = async (req: Request, res: Response) => {
                     console.log(err);
                     return res.send(err);
                   }
+                  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
+                    expiresIn: 86400,
+                  });
                   console.log("User has logged in.");
-                  return res.send({msg: "success"});
+                  res.status(200).send({
+                    auth: true,
+                    token,
+                    message: 'user found & logged in',
+                  });
                 });
               })(req, res);
         }
