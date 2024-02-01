@@ -4,9 +4,13 @@ import User, { UserDocument } from "../models/User";
 
 module.exports = async function (passport: any) {
   passport.use(
-    new LocalStrategy({ usernameField: "email" }, async (email: string, password: string, done: any) => {
+    new LocalStrategy({ 
+      usernameField: "email", 
+      passwordField: "password", 
+      session: false 
+    }, async (email: string, password: string, done: any) => {
         try {
-            const user = await User.findOne({ email: email.toLowerCase() });
+            const user: UserDocument | null = await User.findOne({ email: email.toLowerCase() });
           
             if (!user) {
               return done(null, false, { message: `Email ${email} not found.` });
@@ -34,6 +38,41 @@ module.exports = async function (passport: any) {
           
     })
   ),
+
+  passport.use(
+    'register',
+    new LocalStrategy(
+      {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+        session: false,
+      },
+      async (req, email: string, password: string, done) => {
+        console.log(email);
+  
+        const user = new User({
+          userName: req.body.userName,
+          email: req.body.email,
+          password: req.body.password
+        });
+        const userExists = await User.findOne({email: req.body.email});
+        if(userExists){
+            console.log('username or email already taken');
+            return done(null, false, {
+              message: 'username or email already taken',
+            });
+        }else {
+          try{
+              await user.save();
+              return done(null, user);
+          } catch(err){
+            return done(err);
+          }
+        }
+      },
+    ),
+  );
   
   passport.use(
     'jwt',

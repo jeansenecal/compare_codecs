@@ -12,18 +12,24 @@ export default function Login() {
       alert("Please fill in all fields");
       return;
     }
-    const res: Response = await fetch('http://localhost:8000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({email, password})
-    });
-    const data = await res.json();
-    console.log(data);
-    if(data.msg === "success") {
-      console.log("Logged in successfully");
-        navigate('/');
+    try{
+      const res: Response = await fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, password})
+      });
+      const data = await res.json();
+      localStorage.setItem('JWT', data.token);
+      console.log(data);
+      navigate('/');
+    }
+    catch(error: any){
+      console.error(error.response.data);
+      if ( error.response.data === 'bad username' || error.response.data === 'passwords do not match') {
+        alert(error.response.data);
+      }
     }
   }
 

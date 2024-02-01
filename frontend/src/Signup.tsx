@@ -1,23 +1,39 @@
+import { useNavigate } from "react-router-dom"
+
 export default function Signup() {
+  const navigate = useNavigate();
 
 async function signup(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const form = event.currentTarget
-    const data = {
+    const body = {
       email: form.email.value,
       userName: form.userName.value,
       password: form.password.value,
       confirmPassword: form.confirmPassword.value
     }
-    const response = await fetch('http://localhost:8000/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    const result = await response.json()
-    console.log(result)
+    if (body.email === '' || body.password === '' || body.email === '' || body.confirmPassword === '') {
+      alert('Please fill in all fields')
+      return
+    }
+    try {
+      const response = await fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await response.json();
+      localStorage.setItem('JWT', data.token);
+      console.log(data);
+      navigate('/');
+    } catch (error: any) {
+      console.error(error.response.data);
+      if (error.response.data === 'username or email already taken') {
+        alert(error);
+      }
+    }
   }
 
   return (
