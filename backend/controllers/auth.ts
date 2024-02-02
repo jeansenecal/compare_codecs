@@ -20,8 +20,8 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
                   console.error(err);
                 }
                 if (info !== undefined) {
-                  console.error(info.message);
-                  res.status(403).send(info.message);
+                  console.error("AuthController: " + info.message);
+                  res.status(403).send(info);
                 } else {
                     req.logIn(user, (err) => {
                         if (err) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import './index.css';
 import Navigation from './Navigation';
-import SetupSelector from './SetupSelector';
 import CodecSelector from './CodecSelector';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MyResults from './MyResults';
@@ -16,7 +15,7 @@ function App() {
       <div className='app'>
       
       <Routes>
-        <Route path="/" element={<><Navigation /> <SetupSelector /> <CodecSelector/></>} />
+        <Route path="/" element={<><Navigation /> <CodecSelector/></>} />
         <Route path="my-results" element={<MyResults/>} />
         <Route path="global-results" element={<GlobalResults/>} />
         <Route path="/login" element={<Login/>}/>

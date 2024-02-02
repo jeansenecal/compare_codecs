@@ -26,13 +26,13 @@ async function signup(event: React.FormEvent<HTMLFormElement>) {
       });
       const data = await response.json();
       localStorage.setItem('JWT', data.token);
-      console.log(data);
+      console.log("here: " + data);
       navigate('/');
     } catch (error: any) {
-      console.error(error.response.data);
-      if (error.response.data === 'username or email already taken') {
-        alert(error);
-      }
+      console.error(error);
+      //if (error.response.data === 'username or email already taken') {
+      //  alert(error);
+      //}
     }
   }
 

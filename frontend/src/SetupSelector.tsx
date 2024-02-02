@@ -1,5 +1,36 @@
+import { useEffect, useState } from "react";
 
-export default function SetupSelector() {
+interface Props{
+    onChange: (fieldName: string, value: string | boolean) => void
+}
+
+interface Setup {
+    label: string,
+    value: string
+}
+
+export default function SetupSelector({ onChange }: Props) {
+    const [saveSetup, setSaveSetup] = useState(false);
+    const [setups, setSetups] = useState<Setup[]>([]);
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>){
+        onChange(event.target.name, event.target.value);
+    }
+    
+    function setChecked(event: React.MouseEvent<HTMLInputElement>){
+        onChange(event.currentTarget.name, !saveSetup);
+        setSaveSetup(!saveSetup);
+    }
+
+    useEffect(() => {
+        const fecthMySetup = async () => {
+            const res: Response = await fetch('http://localhost:8000/setup');
+            const data: Setup[] = await res.json();
+            setSetups(data);
+        }
+        fecthMySetup();
+    }, []);
+        
     return ( 
         <div className="flex flex-row flex-wrap justify-center ml-20 mt-20 mr -20">
             <select defaultValue={""} className="mx-5 select select-bordered w-full max-w-xs">
@@ -10,18 +41,18 @@ export default function SetupSelector() {
             <label className="ml-5 label mr-3">
                 <span className="label-text">Headphone:</span>
             </label>
-            <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
+            <input name="headphone" onChange={handleChange} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
             <label className="label ml-5 mr-3">
                 <span className="label-text">Amplifier:</span>
             </label>
-            <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
+            <input  name="amp" onChange={handleChange} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
             <label className="label ml-5 mr-3">
                 <span className="label-text">DAC:</span>
             </label>
-            <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
+            <input  name="dac" onChange={handleChange} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
             <label className="label cursor-pointer mx-5">
                 <span className="label-text mr-3">Save setup?</span> 
-                <input type="checkbox" className="checkbox" />
+                <input  name="saveSetup" onClick={setChecked} type="checkbox" className="checkbox" />
             </label>
         </div>
     )}
