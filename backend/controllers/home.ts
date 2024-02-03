@@ -4,6 +4,7 @@ import Playlist from '../models/Playlist';
 import { SongIndex, SongInformation } from '../config/SongIndex';
 import dotenv from "dotenv";
 import { Codecs } from '../config/enumCodecs';
+import User from '../models/User';
 
 dotenv.config({ path: "./config/.env" });
 
@@ -19,7 +20,7 @@ export const getGlobalResults = async (req: Request, res: Response) => {
 }
 
 export const getResultsByUserId = async (req: Request, res: Response) => {
-    let results = await TestResult.find({ userId: req.params.userId });
+    let results = await TestResult.find({ userId: req.body.userId });
     res.send(results);
 }
 
@@ -45,6 +46,24 @@ export const postCreatePlaylist = async (req: Request, res: Response) => {
     res.send("created");
 }
 
+export const getSetupsByUserId = async (req: Request, res: Response) => {
+    const userId = req.body.userId;
+    let user = await User.findOne({ id: userId }).lean();
+    if(user) {
+        let setups = user.setups;
+        if(!setups || setups.length === 0) {
+            res.status(200).send([{
+                headphone: "Sunny HD Six Hundo",
+                dac: "Atom DAC",
+                amp: "Atom Amp",
+            }]);
+        }else{
+            res.status(200).send(setups);
+        }
+    }else {
+        res.status(400).send("user not found");
+    }
+}
 
 function shuffle(array: SongInformation[]) {
     for (let i = array.length - 1; i > 0; i--) {

@@ -1,13 +1,14 @@
 import express, { Router } from "express";
 import { postLogin, postSignup, logout } from "../controllers/auth";
 import { ensureAuth, ensureGuest } from "../middleware/auth";
+import  * as home  from "../controllers/home";
 
 const router: Router = express.Router();
-import { getGlobalResults, getResultsByUserId, getCodecList, postCreatePlaylist } from "../controllers/home";
 
-router.get('/globalresults', getGlobalResults);
-router.get('/userresults', getResultsByUserId);
-router.get('/codecs', getCodecList);
+router.get('/globalresults', home.getGlobalResults);
+router.get('/userresults', home.getResultsByUserId);
+router.get('/codecs', home.getCodecList);
+router.get('/setups', ensureAuth, home.getSetupsByUserId);
 router.post('/login', postLogin);
 router.post('/signup', postSignup);
 router.get('/logout', logout);

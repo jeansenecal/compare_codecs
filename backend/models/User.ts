@@ -2,17 +2,23 @@ import mongoose, { Document } from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface IUser {
-    email: string;
-    userName: string;
-    password: string;
-    name: string;
+  email: string;
+  userName: string;
+  password: string;
+  setups: Setup[];
+}
+
+export interface Setup {
+  headphone: string;
+  dac: string;
+  amp: string;
 }
 
 export interface UserDocument extends IUser, Document{
-    comparePassword(candidatePassword: string, callback: any): void
+  comparePassword(candidatePassword: string, callback: any): void
 }
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema<IUser>({
     email: { 
         type: String, 
         unique: true,
@@ -25,7 +31,8 @@ const UserSchema = new mongoose.Schema({
     userName: {
         type: String,
         required: true
-    }
+    },
+    setups: new mongoose.Schema<Setup[]>([{ headphone: String, dac: String, amp: String }])
 });
 
 // Password hash middleware.

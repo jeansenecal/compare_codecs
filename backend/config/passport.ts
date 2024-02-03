@@ -81,15 +81,13 @@ module.exports = async function (passport: any) {
       secretOrKey: process.env.JWT_SECRET!
     }, (jwt_payload, done) => {
       try {
-        User.findOne({
-          where: {
-            id: jwt_payload.id,
-          },
-        }).then(user => {
+        User.findOne({ _id: jwt_payload.id })
+        .then(user => {
           if (user) {
             console.log('user found in db in passport');
             done(null, user);
           } else {
+            console.log(jwt_payload)
             console.log('user not found in db');
             done(null, false);
           }

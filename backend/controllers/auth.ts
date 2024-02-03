@@ -23,11 +23,19 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
                   console.error("AuthController: " + info.message);
                   res.status(403).send(info);
                 } else {
-                    req.logIn(user, (err) => {
+                    req.logIn(user, async (err) => {
                         if (err) {
                           console.log(err);
                           return res.send(err);
                         }
+                        const newUser = new User({
+                            userName: req.body.userName,
+                            email: user.email,
+                            password: user.password,
+                            setups: []
+                        });
+                        await User.findOneAndUpdate({ id: user.id }, newUser, { returnOriginal: false });
+
                         const token: string = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
                           expiresIn: 86400,
                         });
@@ -35,6 +43,7 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
                         res.status(200).send({
                           auth: true,
                           token,
+                          userId: user.id,
                           message: 'user created & logged in',
                         });
                     });
@@ -66,13 +75,14 @@ export const postLogin = async (req: Request, res: Response) => {
                     console.log(err);
                     return res.send(err);
                   }
-                  const token: string = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
+                  const token: string = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
                     expiresIn: 86400,
                   });
                   console.log("User has logged in.");
                   res.status(200).send({
                     auth: true,
                     token,
+                    userId: user.id,
                     message: 'user found & logged in',
                   });
                 });

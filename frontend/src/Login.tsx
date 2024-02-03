@@ -22,6 +22,7 @@ export default function Login() {
       });
       const data = await res.json();
       localStorage.setItem('JWT', data.token);
+      localStorage.setItem('user', data.userId);
       console.log(data);
       navigate('/');
     }

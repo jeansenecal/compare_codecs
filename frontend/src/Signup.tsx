@@ -26,6 +26,7 @@ async function signup(event: React.FormEvent<HTMLFormElement>) {
       });
       const data = await response.json();
       localStorage.setItem('JWT', data.token);
+      localStorage.setItem('user', data.userId);
       console.log("here: " + data);
       navigate('/');
     } catch (error: any) {
