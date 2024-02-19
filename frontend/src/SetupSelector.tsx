@@ -13,17 +13,24 @@ interface Setup {
 export default function SetupSelector({ onChange }: Props) {
     const [saveSetup, setSaveSetup] = useState(false);
     const [setups, setSetups] = useState<Setup[]>([]);
-    const [headphone, setHeadphone] = useState('');
+    const [headphones, setHeadphones] = useState('');
     const [dac, setDac] = useState('');
     const [amp, setAmp] = useState('');
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>){
         onChange(event.target.name, event.target.value);
+        if(event.target.name === "headphones") {
+            setHeadphones(event.target.value);
+        } else if(event.target.name === "dac") {
+            setDac(event.target.value);
+        } else if(event.target.name === "amp") {
+            setAmp(event.target.value);
+        }
     }
 
     function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>){
         const index: number = parseInt(event.target.value);
-        setHeadphone(setups[index].headphone);
+        setHeadphones(setups[index].headphone);
         setAmp(setups[index].amp);
         setDac(setups[index].dac);
     }
@@ -61,7 +68,7 @@ export default function SetupSelector({ onChange }: Props) {
             <label className="ml-5 label mr-3">
                 <span className="label-text">Headphone:</span>
             </label>
-            <input name="headphone" onChange={handleInputChange} value={headphone} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
+            <input name="headphones" onChange={handleInputChange} value={headphones} type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs mr-5" />
             <label className="label ml-5 mr-3">
                 <span className="label-text">Amplifier:</span>
             </label>

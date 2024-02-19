@@ -12,5 +12,7 @@ router.get('/setups', ensureAuth, home.getSetupsByUserId);
 router.post('/login', postLogin);
 router.post('/signup', postSignup);
 router.get('/logout', logout);
+router.post('/playlist', home.postCreatePlaylist);
+router.get('/playlist/:id/nextsong', home.getNextSongInPlaylist);
 
 export default router;

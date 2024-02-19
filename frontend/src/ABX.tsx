@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import Player from "./Player";
 
@@ -24,6 +24,16 @@ export default function ABX (){
             }
         }
       };
+
+      useEffect(() => {
+        const fetchNextSong = async () => {
+            const playlistId = localStorage.getItem('playlistId');
+            const res: Response = await fetch(`http://localhost:8000/playlist/${playlistId}/nextsong`);
+            const data: Codec[] = await res.json();
+            setCodecs(data);
+        }
+        fetchNextSong();
+    }, []);
 
     return(
         <div>
