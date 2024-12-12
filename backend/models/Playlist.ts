@@ -4,11 +4,12 @@ export interface IPlaylist{
     songs: {
         title: string,
         artist: string,
-        section: number
+        section: number,
+        folderId: string
     }[],
-    headphones: string,
-    dac: string,
-    amp: string
+    userAge?: number | undefined,
+    codecA: string,
+    codecB: string
 }
 
 export interface PlaylistDocument extends IPlaylist, Document{}
@@ -26,17 +27,20 @@ const Playlist = new mongoose.Schema({
         section: {
             type: Number,
             required: true
+        },
+        folderId: {
+            type: String,
+            required: true
         }
     }],
-    headphones: {
+    userAge: {
+        type: Number
+    },
+    codecA: {
         type: String,
         required: true
     },
-    dac: {
-        type: String,
-        required: true
-    },
-    amp: {
+    codecB: {
         type: String,
         required: true
     }

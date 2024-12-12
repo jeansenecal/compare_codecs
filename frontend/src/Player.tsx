@@ -13,38 +13,45 @@ export default function Player({ songUrl, name, colour, checked, setPlayerCurren
 
   //TODO
   //set preload to true
-  //Use the attribute sprite to set when you want the start playing so you don't have to create different files for the same song
-  /*new Howl({
-    sprite: {
-      key1: [offset, duration, (loop)]
-    },
-  });*/
-  //Or use the .seek()?
 
 
   //Every time the component is rendered a new Howl instance is created. I need to use useRef to keep the instance referenced.
-  const soundRef: React.MutableRefObject<Howl> = useRef(new Howl({
-    src: [songUrl],
-    html5: true
-  }));
-  const sound: Howl = soundRef.current;
+  const soundRef: React.MutableRefObject<Howl | null> = useRef(null);
   const cardClassName: string = colour === "neutral" ? "card w-96 bg-neutral text-neutral-content" : "card w-96 bg-primary text-neutral-content";
   
   const [swapClassName, setswapClassName] = useState(checked ? "swap swap-active" : "swap");
   const [playing, setPlaying] = useState(false);
 
   const toggle = () => {
-    setPlaying(!playing);
-    if (playing) {
-      sound.pause();
-      setswapClassName("swap");
-    } else {
-      Howler.stop();
-      sound.play();
-      setswapClassName("swap swap-active");
-      setPlayerCurrentlyPlaying(name);
+    if(soundRef.current) {
+      setPlaying(!playing);
+      if (playing) {
+        soundRef.current.pause();
+        setswapClassName("swap");
+      } else {
+        Howler.stop();
+        soundRef.current.play();
+        setswapClassName("swap swap-active");
+        setPlayerCurrentlyPlaying(name);
+      }
     }
   }
+  useEffect( () => {
+    if (soundRef.current) {
+      soundRef.current.unload();
+    }
+    soundRef.current = new Howl({
+      src: [songUrl],
+      html5: true,
+      preload: true, // Set preload to true
+    });
+    return () => {
+      // Clean up Howl instance on component unmount
+      if(soundRef.current) {
+        soundRef.current.unload();
+      }
+  };
+  }, [songUrl]);
 
   useEffect( () => {
     setswapClassName(checked ? "swap swap-active" : "swap");

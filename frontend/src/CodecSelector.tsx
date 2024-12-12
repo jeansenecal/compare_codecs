@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react'
-import SetupSelector from './SetupSelector';
 
 interface Codec {
     label: string,
@@ -10,11 +9,8 @@ interface Codec {
 export default function CodecSelector() {
     const navigate = useNavigate();
     const [codecA, setCodecA] = useState('');
+    const [userAge, setuserAge] = useState('');
     const [codecB, setCodecB] = useState('');
-    const [headphones, setHeadphones] = useState('');
-    const [amp, setAmp] = useState('');
-    const [dac, setDac] = useState('');
-    const [saveSetup, setSaveSetup] = useState(false);
     const [codecs, setCodecs] = useState<Codec[]>([]);
 
     async function startComparison() {
@@ -27,9 +23,7 @@ export default function CodecSelector() {
                 body: JSON.stringify({
                     codecA,
                     codecB,
-                    headphones,
-                    amp,
-                    dac
+                    userAge,
                 })
             });
             const data = await res.json();
@@ -44,34 +38,26 @@ export default function CodecSelector() {
         }
     }
 
-    function handleFieldChange(fieldName: string, value: string | boolean): void{
-        if (typeof value === 'string'){
-            if(fieldName === 'headphones'){
-                setHeadphones(value);
-            }else if(fieldName === 'amp'){
-                setAmp(value);
-            }else if(fieldName === 'dac'){
-                setDac(value);
-            }
-        }else if(fieldName === 'saveSetup'){
-            setSaveSetup(value);
-        }
-    }
-
     useEffect(() => {
         const fetchCodecs = async () => {
             const res: Response = await fetch('http://localhost:8000/codecs');
             const data: Codec[] = await res.json();
             setCodecs(data);
         }
+
+        //Fetch userAge if user is logged in
         fetchCodecs();
     }, []);
 
 
     return (
         <>
-        <SetupSelector onChange={handleFieldChange} />
         <div className="flex flex-row flex-wrap justify-center mt-20">
+            
+            <label className="label">
+                <span className="label-text">Your age:</span>
+            </label>
+            <input type="text" placeholder="age" className="input input-bordered max-w-xs mr-10" name="age" value={userAge} onChange={(e) => setuserAge(e.target.value)}/>
             <select name="codecA" value={codecA} onChange={(e) => setCodecA(e.target.value)} className="select select-bordered w-full max-w-xs mr-10 bg-accent">
                 <option disabled value="">Codec A</option>
                 {
@@ -87,7 +73,6 @@ export default function CodecSelector() {
                 }
             </select>
             <button className="btn btn-accent ml-10" onClick={startComparison}>Compare!</button>
-            <Link to="/abx">Test</Link>
         </div>
         </>
     )

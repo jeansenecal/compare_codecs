@@ -1,5 +1,18 @@
 import mongoose from "mongoose";
 
+export interface ITestResult {
+    codecA: string,
+    codecB: string,
+    song: string,
+    playlistId: string,
+    userAge: number;
+    correctAnswer: boolean,
+    user: number,
+    date: Date
+}
+
+export interface TestResultDocument extends ITestResult, Document{}
+
 const TestResult = new mongoose.Schema({
     codecA: {
         type: String,
@@ -9,12 +22,19 @@ const TestResult = new mongoose.Schema({
         type: String,
         required: true
     },
-    hardware: {
+    song: {
         type: String,
         required: true
     },
-    result: {
-        type: String,
+    playlistId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    userAge: {
+        type: Number
+    },
+    correctAnswer: {
+        type: Boolean,
         required: true
     },
     user: {

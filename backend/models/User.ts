@@ -5,13 +5,7 @@ export interface IUser {
   email: string;
   userName: string;
   password: string;
-  setups: Setup[];
-}
-
-export interface Setup {
-  headphone: string;
-  dac: string;
-  amp: string;
+  age: number;
 }
 
 export interface UserDocument extends IUser, Document{
@@ -32,7 +26,10 @@ const UserSchema = new mongoose.Schema<IUser>({
         type: String,
         required: true
     },
-    setups: new mongoose.Schema<Setup[]>([{ headphone: String, dac: String, amp: String }])
+    age: {
+      type: Number,
+      required: true
+    }
 });
 
 // Password hash middleware.
